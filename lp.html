@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rosamond LP Cash Flow Timeline — 5-Year vs 10-Year</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #EFE9DC; font-family: Calibri, "Segoe UI", system-ui, sans-serif; color: #1F2D44; }
+  .page { max-width: 1100px; margin: 24px auto; padding: 0 20px; }
+  .card { background: #FBF8F2; border: 0.5px solid #E8CC82; border-radius: 12px; padding: 20px; }
+  button { font-family: Calibri, sans-serif; cursor: pointer; }
+  input[type="range"] { accent-color: #C9A24A; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+</style>
+</head>
+<body>
+<div class="page">
+<div class="card">
+
+  <h2 class="sr-only">Animated cashflow timeline of the Rosamond LP investment, showing Project (Townhomes) and FBS Plant cashflows period by period under 5-year and 10-year scenarios. Assumes no future work for the FBS assembly plant after project construction is finished.</h2>
+
+  <div style="border-top: 4px solid #C9A24A; padding-top: 14px; margin-bottom: 16px;">
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+      <div>
+        <div style="font-family: Georgia, serif; font-size: 11px; font-weight: bold; color: #A88232; letter-spacing: 1.5px;">CONFIDENTIAL  ·  LP CASH FLOW MODEL</div>
+        <div style="font-family: Georgia, serif; font-size: 24px; font-weight: bold; color: #1A2A44; margin-top: 4px;">Rosamond LP Cash Flow Timeline</div>
+        <div id="periodLabel" style="font-size: 12px; color: #6B7280; margin-top: 4px;">Period 1 · Y0 Pre-Dev H1</div>
+      </div>
+      <div style="display: flex; gap: 0; border: 1px solid #C9A24A; border-radius: 4px; overflow: hidden;">
+        <button id="btn5" style="padding: 8px 16px; font-family: Georgia, serif; font-size: 12px; font-weight: bold; background: #C9A24A; color: #1A2A44; border: 0; letter-spacing: 0.5px;">5-YEAR</button>
+        <button id="btn10" style="padding: 8px 16px; font-family: Georgia, serif; font-size: 12px; font-weight: bold; background: transparent; color: #1A2A44; border: 0; letter-spacing: 0.5px;">10-YEAR</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="background: #1A2A44; border-radius: 4px; padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px;">
+    <button id="playBtn" style="padding: 6px 14px; font-size: 12px; font-weight: bold; background: #C9A24A; color: #1A2A44; border: 0; border-radius: 3px; min-width: 86px;">► PLAY</button>
+    <button id="resetBtn" style="padding: 6px 14px; font-size: 12px; font-weight: bold; background: transparent; color: #FFFFFF; border: 1px solid #C9A24A; border-radius: 3px; min-width: 86px;">↺ RESET</button>
+    <input id="scrubber" type="range" min="0" max="11" value="0" step="1" style="flex: 1;" />
+    <span id="speedLabel" style="font-size: 11px; color: #E8CC82; min-width: 34px; text-align: right; font-weight: bold;">1.0×</span>
+    <input id="speed" type="range" min="0.5" max="3" step="0.5" value="1" style="width: 72px;" />
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px;">
+    <div style="background: #FFFFFF; border-top: 3px solid #6B2C3F; border-radius: 4px; padding: 12px 14px;">
+      <div style="font-family: Georgia, serif; font-size: 22px; font-weight: bold; color: #6B2C3F;" id="mDeployed">$0</div>
+      <div style="font-size: 11px; color: #1A2A44; font-weight: bold; margin-top: 2px;">Capital Deployed</div>
+    </div>
+    <div style="background: #FFFFFF; border-top: 3px solid #5E8B4D; border-radius: 4px; padding: 12px 14px;">
+      <div style="font-family: Georgia, serif; font-size: 22px; font-weight: bold; color: #5E8B4D;" id="mReturned">$0</div>
+      <div style="font-size: 11px; color: #1A2A44; font-weight: bold; margin-top: 2px;">Cash Returned</div>
+    </div>
+    <div style="background: #FFFFFF; border-top: 3px solid #1A2A44; border-radius: 4px; padding: 12px 14px;">
+      <div style="font-family: Georgia, serif; font-size: 22px; font-weight: bold; color: #1A2A44;" id="mNet">$0</div>
+      <div style="font-size: 11px; color: #1A2A44; font-weight: bold; margin-top: 2px;">Net to Date</div>
+    </div>
+    <div style="background: #FFFFFF; border-top: 3px solid #C9A24A; border-radius: 4px; padding: 12px 14px;">
+      <div style="font-family: Georgia, serif; font-size: 22px; font-weight: bold; color: #A88232;" id="mMoic">—</div>
+      <div style="font-size: 11px; color: #1A2A44; font-weight: bold; margin-top: 2px;">Multiple on Invested Capital</div>
+    </div>
+  </div>
+
+  <div style="background: #FFFFFF; border: 0.5px solid #E8CC82; border-radius: 4px; padding: 14px; margin-bottom: 12px;">
+    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+      <div style="font-family: Georgia, serif; font-size: 14px; font-weight: bold; color: #1A2A44; letter-spacing: 0.5px;">CUMULATIVE LP CASH FLOW</div>
+      <div style="display: flex; gap: 14px; font-size: 11px; color: #1F2D44; flex-wrap: wrap;">
+        <span style="display: flex; align-items: center; gap: 5px;"><span style="width:10px;height:10px;background:#C96F32;"></span>Project (Townhomes)</span>
+        <span style="display: flex; align-items: center; gap: 5px;"><span style="width:10px;height:10px;background:#2D8C8D;"></span>FBS Plant</span>
+        <span style="display: flex; align-items: center; gap: 5px;"><span style="width:10px;height:10px;background:#1A2A44;"></span>Combined</span>
+      </div>
+    </div>
+    <div style="position: relative; width: 100%; height: 280px;">
+      <canvas id="cumChart" role="img" aria-label="Cumulative LP cash flow over time for Project, FBS Plant, and combined.">Cumulative LP cash flow over time.</canvas>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+    <div style="background: #FFFFFF; border: 0.5px solid #E8CC82; border-radius: 4px; padding: 12px 14px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+        <div style="font-family: Georgia, serif; font-size: 13px; font-weight: bold; color: #C96F32; letter-spacing: 0.5px;">PROJECT (TOWNHOMES)</div>
+        <div id="projTotal" style="font-size: 11px; color: #6B7280; font-weight: bold;">$0</div>
+      </div>
+      <div id="projEvent" style="font-size: 11px; color: #1F2D44; margin: 2px 0 8px; min-height: 16px; font-style: italic;">—</div>
+      <div style="position: relative; width: 100%; height: 130px;">
+        <canvas id="projChart" role="img" aria-label="Per-period project cash flows.">Per-period project cash flows.</canvas>
+      </div>
+    </div>
+    <div style="background: #FFFFFF; border: 0.5px solid #E8CC82; border-radius: 4px; padding: 12px 14px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+        <div style="font-family: Georgia, serif; font-size: 13px; font-weight: bold; color: #2D8C8D; letter-spacing: 0.5px;">FBS PLANT</div>
+        <div id="fbsTotal" style="font-size: 11px; color: #6B7280; font-weight: bold;">$0</div>
+      </div>
+      <div id="fbsEvent" style="font-size: 11px; color: #1F2D44; margin: 2px 0 8px; min-height: 16px; font-style: italic;">—</div>
+      <div style="position: relative; width: 100%; height: 130px;">
+        <canvas id="fbsChart" role="img" aria-label="Per-period FBS Plant cash flows.">Per-period FBS Plant cash flows.</canvas>
+      </div>
+    </div>
+  </div>
+
+  <div id="endPanel" style="background: #1A2A44; border-radius: 4px; padding: 14px 18px; margin-bottom: 12px; display: none;">
+    <div style="font-family: Georgia, serif; font-size: 14px; font-weight: bold; color: #C9A24A; letter-spacing: 0.8px; margin-bottom: 10px;" id="endTitle">5-YEAR EXIT SUMMARY</div>
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
+      <div><div style="font-family: Georgia, serif; font-size: 22px; font-weight: bold; color: #C9A24A;" id="eDeployed">—</div><div style="font-size: 10px; color: #E8CC82; font-weight: bold; letter-spacing: 0.5px; margin-top: 2px;">TOTAL DEPLOYED</div></div>
+      <div><div style="font-family: Georgia, serif; font-size: 22px; font-weight: bold; color: #C9A24A;" id="eInflows">—</div><div style="font-size: 10px; color: #E8CC82; font-weight: bold; letter-spacing: 0.5px; margin-top: 2px;">TOTAL INFLOWS</div></div>
+      <div><div style="font-family: Georgia, serif; font-size: 22px; font-weight: bold; color: #C9A24A;" id="eNet">—</div><div style="font-size: 10px; color: #E8CC82; font-weight: bold; letter-spacing: 0.5px; margin-top: 2px;">NET PROFIT</div></div>
+      <div><div style="font-family: Georgia, serif; font-size: 22px; font-weight: bold; color: #C9A24A;" id="eIrr">—</div><div style="font-size: 10px; color: #E8CC82; font-weight: bold; letter-spacing: 0.5px; margin-top: 2px;">ANNUALIZED IRR</div></div>
+    </div>
+  </div>
+
+  <div style="border-top: 1px solid #E8CC82; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #6B7280; gap: 14px; flex-wrap: wrap;">
+    <div><span style="font-weight: bold; color: #A88232;">ASSUMPTION:</span> No future work for the FBS (Fast-Build-System) assembly plant after Rosamond project construction is finished. FBS cash inflows limited to the four scheduled phase profit shares and the $5M loan principal repayment in Y3.</div>
+    <div style="white-space: nowrap;">Corbrus Capital Group</div>
+  </div>
+
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+(function() {
+  const labels5  = ["Y0","","Y1","","Y2","","Y3","","Y4","","Y5","Exit"];
+  const labels10 = ["Y0","","Y1","","Y2","","Y3","","Y4","","Y5","","Y6","","Y7","","Y8","","Y9","","Y10","Exit"];
+
+  const data5 = {
+    periods: 12,
+    labels: labels5,
+    yearTags: ["Y0 Pre-Dev H1","Y0 Pre-Dev H2","Y1 Ph1 Build","Y1 Ph1 Conv + Ph2 Build","Y2 Ph2 Conv + Ph3 Build","Y2 Ph3 Conv + Ph4 Build","Y3 Ph4 Conv (all stab)","Y3 All stab · Loan repaid","Y4 Stabilized","Y4 Stabilized","Y5 Stabilized","Y5 Stabilized · EXIT"],
+    project: [-1000000, -9000000, 0, 0, 0, 15935, 52528, 146372, 157550, 168895, 180408, 21813187],
+    fbs:     [0, -5000000, 0, 2626728, 2626728, 2626728, 2626728, 5000000, 0, 0, 0, 0],
+    projEvents: ["LP Tranche 1: -$1.0M","LP Tranche 1: -$1.0M  +  Tranche 2A Project Equity: -$8.0M","-","-","-","Op CF (20%): $15.9K","Op CF: $52.5K","Op CF: $146.4K","Op CF: $157.6K","Op CF: $168.9K","Op CF: $180.4K","Op CF: $192.1K  +  Y5 EXIT WATERFALL: $21.6M"],
+    fbsEvents:  ["-","LP Tranche 2B FBS Loan: -$5.0M","-","FBS Profit Share Ph1: $2.63M","FBS Profit Share Ph2: $2.63M","FBS Profit Share Ph3: $2.63M","FBS Profit Share Ph4: $2.63M","$5M FBS Loan principal REPAID","No FBS activity (no future work)","No FBS activity","No FBS activity","No FBS activity"],
+    deployed: 15000000, inflows: 38041787, net: 23041787, moic: 2.54, irr: 0.30
+  };
+
+  const data10 = {
+    periods: 22,
+    labels: labels10,
+    yearTags: ["Y0 Pre-Dev H1","Y0 Pre-Dev H2","Y1 Ph1 Build","Y1 Ph1 Conv + Ph2 Build","Y2 Ph2 Conv + Ph3 Build","Y2 Ph3 Conv + Ph4 Build","Y3 Ph4 Conv (all stab)","Y3 All stab · Loan repaid","Y4 Stabilized","Y4 Stabilized","Y5 Stabilized","Y5 Stabilized","Y6 Stabilized","Y6 Stabilized","Y7 Stabilized","Y7 Stabilized","Y8 Stabilized","Y8 Stabilized","Y9 Stabilized","Y9 Stabilized","Y10 Stabilized","Y10 Stabilized · EXIT"],
+    project: [-1000000,-9000000,0,0,0,15935,52528,146372,157550,168895,180408,192093,203951,215987,228201,240598,253179,265947,278905,292057,305404,29949194],
+    fbs:     [0,-5000000,0,2626728,2626728,2626728,2626728,5000000,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    projEvents: ["LP Tranche 1: -$1.0M","LP Tranche 1: -$1.0M  +  Tranche 2A Project Equity: -$8.0M","-","-","-","Op CF (20%): $15.9K","Op CF: $52.5K","Op CF: $146.4K","Op CF: $157.6K","Op CF: $168.9K","Op CF: $180.4K","Op CF: $192.1K","Op CF: $204.0K","Op CF: $216.0K","Op CF: $228.2K","Op CF: $240.6K","Op CF: $253.2K","Op CF: $265.9K","Op CF: $278.9K","Op CF: $292.1K","Op CF: $305.4K","Op CF: $319.0K  +  Y10 EXIT WATERFALL: $29.6M (OZ tax-free)"],
+    fbsEvents:  ["-","LP Tranche 2B FBS Loan: -$5.0M","-","FBS Profit Share Ph1: $2.63M","FBS Profit Share Ph2: $2.63M","FBS Profit Share Ph3: $2.63M","FBS Profit Share Ph4: $2.63M","$5M FBS Loan principal REPAID","No FBS activity (no future work)","No FBS activity","No FBS activity","No FBS activity","No FBS activity","No FBS activity","No FBS activity","No FBS activity","No FBS activity","No FBS activity","No FBS activity","No FBS activity","No FBS activity","No FBS activity"],
+    deployed: 15000000, inflows: 48654116, net: 33654116, moic: 3.24, irr: 0.22
+  };
+
+  const fmt = (v) => {
+    const a = Math.abs(v);
+    const sign = v < 0 ? "-" : "";
+    if (a >= 1000000) return sign + "$" + (a/1000000).toFixed(2) + "M";
+    if (a >= 1000) return sign + "$" + Math.round(a/1000) + "K";
+    return sign + "$" + Math.round(a);
+  };
+  const fmtAxis = (v) => {
+    const a = Math.abs(v);
+    const sign = v < 0 ? "-" : "";
+    if (a >= 1000000) return sign + "$" + (a/1000000).toFixed(0) + "M";
+    if (a >= 1000) return sign + "$" + Math.round(a/1000) + "K";
+    return sign + "$" + Math.round(a);
+  };
+
+  let mode = "5yr";
+  let current = 0;
+  let playing = false;
+  let speed = 1;
+  let timer = null;
+  const $ = (id) => document.getElementById(id);
+
+  function cumulative(arr) {
+    const out = []; let s = 0;
+    for (const v of arr) { s += v; out.push(s); }
+    return out;
+  }
+  const D = () => mode === "5yr" ? data5 : data10;
+
+  const cumCtx = $("cumChart").getContext("2d");
+  const projCtx = $("projChart").getContext("2d");
+  const fbsCtx = $("fbsChart").getContext("2d");
+
+  const sharedOpts = {
+    responsive: true, maintainAspectRatio: false,
+    animation: { duration: 300 },
+    plugins: { legend: { display: false }, tooltip: { enabled: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { autoSkip: false, maxRotation: 0, font: { size: 11, family: "Calibri, sans-serif", weight: "bold" }, color: "#1A2A44" }, title: { display: true, text: "Year", font: { size: 11, family: "Georgia, serif", style: "italic" }, color: "#6B7280" } },
+      y: { grid: { color: "rgba(201,162,74,0.15)" }, ticks: { font: { size: 10, family: "Calibri, sans-serif" }, color: "#6B7280", callback: (v) => fmtAxis(v) } }
+    }
+  };
+
+  const cumChart = new Chart(cumCtx, {
+    type: "line",
+    data: {
+      labels: data5.labels,
+      datasets: [
+        { label: "Project", data: [], borderColor: "#C96F32", backgroundColor: "rgba(201,111,50,0.05)", borderWidth: 2.5, fill: false, pointRadius: 2.5, pointBackgroundColor: "#C96F32", tension: 0.15 },
+        { label: "FBS", data: [], borderColor: "#2D8C8D", backgroundColor: "rgba(45,140,141,0.05)", borderWidth: 2.5, fill: false, pointRadius: 2.5, pointBackgroundColor: "#2D8C8D", tension: 0.15 },
+        { label: "Combined", data: [], borderColor: "#1A2A44", backgroundColor: "rgba(26,42,68,0.08)", borderWidth: 3, fill: true, pointRadius: 3, pointBackgroundColor: "#1A2A44", tension: 0.15 }
+      ]
+    },
+    options: sharedOpts
+  });
+
+  const smallOpts = {
+    ...sharedOpts,
+    scales: {
+      x: { ...sharedOpts.scales.x, ticks: { ...sharedOpts.scales.x.ticks, font: { size: 10, family: "Calibri, sans-serif", weight: "bold" } }, title: { display: true, text: "Year", font: { size: 10, family: "Georgia, serif", style: "italic" }, color: "#6B7280" } },
+      y: { ...sharedOpts.scales.y, ticks: { ...sharedOpts.scales.y.ticks, font: { size: 9, family: "Calibri, sans-serif" } } }
+    }
+  };
+
+  const projChart = new Chart(projCtx, {
+    type: "bar",
+    data: { labels: data5.labels, datasets: [{ data: [], backgroundColor: (ctx) => (ctx.parsed && ctx.parsed.y < 0) ? "#6B2C3F" : "#C96F32", borderWidth: 0 }] },
+    options: smallOpts
+  });
+
+  const fbsChart = new Chart(fbsCtx, {
+    type: "bar",
+    data: { labels: data5.labels, datasets: [{ data: [], backgroundColor: (ctx) => (ctx.parsed && ctx.parsed.y < 0) ? "#6B2C3F" : "#2D8C8D", borderWidth: 0 }] },
+    options: smallOpts
+  });
+
+  function render() {
+    const d = D();
+    const projCum = cumulative(d.project);
+    const fbsCum = cumulative(d.fbs);
+    const combined = projCum.map((v,i) => v + fbsCum[i]);
+    const slice = (arr) => arr.map((v,i) => i <= current ? v : null);
+
+    cumChart.data.labels = d.labels;
+    cumChart.data.datasets[0].data = slice(projCum);
+    cumChart.data.datasets[1].data = slice(fbsCum);
+    cumChart.data.datasets[2].data = slice(combined);
+    cumChart.update("none");
+
+    projChart.data.labels = d.labels;
+    projChart.data.datasets[0].data = d.project.map((v,i) => i <= current ? v : 0);
+    projChart.update("none");
+
+    fbsChart.data.labels = d.labels;
+    fbsChart.data.datasets[0].data = d.fbs.map((v,i) => i <= current ? v : 0);
+    fbsChart.update("none");
+
+    $("periodLabel").textContent = "Period " + (current+1) + " · " + d.yearTags[current];
+    $("projEvent").textContent = d.projEvents[current];
+    $("fbsEvent").textContent = d.fbsEvents[current];
+    $("projTotal").textContent = "cum " + fmt(projCum[current]);
+    $("fbsTotal").textContent = "cum " + fmt(fbsCum[current]);
+
+    let deployed = 0, returned = 0;
+    for (let i = 0; i <= current; i++) {
+      const v = d.project[i] + d.fbs[i];
+      if (v < 0) deployed += -v;
+      else returned += v;
+    }
+    const net = returned - deployed;
+    $("mDeployed").textContent = fmt(deployed);
+    $("mReturned").textContent = fmt(returned);
+    $("mNet").textContent = fmt(net);
+    $("mNet").style.color = net >= 0 ? "#5E8B4D" : "#6B2C3F";
+    $("mMoic").textContent = deployed > 0 ? (returned / deployed).toFixed(2) + "x" : "—";
+
+    if (current >= d.periods - 1) {
+      $("endPanel").style.display = "block";
+      $("endTitle").textContent = mode === "5yr" ? "5-YEAR EXIT SUMMARY" : "10-YEAR EXIT SUMMARY  ·  OZ TAX-FREE ON Y10";
+      $("eDeployed").textContent = fmt(d.deployed);
+      $("eInflows").textContent = fmt(d.inflows);
+      $("eNet").textContent = fmt(d.net);
+      $("eIrr").textContent = (d.irr * 100).toFixed(0) + "%  ·  " + d.moic.toFixed(2) + "x MOIC";
+    } else {
+      $("endPanel").style.display = "none";
+    }
+
+    $("scrubber").value = current;
+  }
+
+  function step() {
+    const d = D();
+    if (current >= d.periods - 1) { stop(); return; }
+    current++;
+    render();
+  }
+  function play() {
+    if (playing) return;
+    playing = true;
+    $("playBtn").textContent = "❚❚ PAUSE";
+    const d = D();
+    if (current >= d.periods - 1) current = 0;
+    const interval = 800 / speed;
+    timer = setInterval(step, interval);
+  }
+  function stop() {
+    playing = false;
+    $("playBtn").textContent = "► PLAY";
+    if (timer) { clearInterval(timer); timer = null; }
+  }
+  function toggle() { if (playing) stop(); else play(); }
+  function reset() { stop(); current = 0; render(); }
+
+  function setMode(m) {
+    mode = m;
+    const d = D();
+    $("scrubber").max = d.periods - 1;
+    $("btn5").style.background = m === "5yr" ? "#C9A24A" : "transparent";
+    $("btn10").style.background = m === "10yr" ? "#C9A24A" : "transparent";
+    reset();
+  }
+
+  $("playBtn").addEventListener("click", toggle);
+  $("resetBtn").addEventListener("click", reset);
+  $("btn5").addEventListener("click", () => setMode("5yr"));
+  $("btn10").addEventListener("click", () => setMode("10yr"));
+  $("scrubber").addEventListener("input", (e) => { stop(); current = parseInt(e.target.value, 10); render(); });
+  $("speed").addEventListener("input", (e) => {
+    speed = parseFloat(e.target.value);
+    $("speedLabel").textContent = speed.toFixed(1) + "x";
+    if (playing) { stop(); play(); }
+  });
+
+  setMode("5yr");
+})();
+</script>
+</body>
+</html>
