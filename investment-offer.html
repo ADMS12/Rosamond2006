@@ -60,20 +60,23 @@
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--line-soft);
   }
-  nav.top .row { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; color: var(--ink); }
+  nav.top .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--ink); font-size: 15px; white-space: nowrap; }
   .brand .logo {
-    width: 36px; height: 36px; border-radius: 8px;
+    width: 34px; height: 34px; border-radius: 8px; flex: 0 0 34px;
     background: linear-gradient(135deg, var(--accent), var(--purple));
     box-shadow: 0 6px 18px rgba(36,89,214,0.30);
     display: grid; place-items: center; color: white; font-weight: 800; font-size: 14px;
   }
-  nav.top a { color: var(--ink-2); text-decoration: none; margin-left: 22px; font-size: 14px; font-weight: 500; }
-  nav.top a:hover { color: var(--accent); }
+  .brand .subtitle { color: var(--ink-mute); font-weight: 500; }
+  .nav-links { display: flex; align-items: center; gap: 6px; }
+  nav.top a.nav-link { color: var(--ink-2); text-decoration: none; padding: 8px 12px; font-size: 14px; font-weight: 500; border-radius: 8px; }
+  nav.top a.nav-link:hover { color: var(--accent); background: var(--accent-bg); }
   nav.top .nav-cta {
-    padding: 8px 14px; border-radius: 10px; font-weight: 600;
+    padding: 9px 14px; border-radius: 10px; font-weight: 600;
     background: linear-gradient(135deg, var(--accent), var(--purple));
-    color: white; margin-left: 22px;
+    color: white; text-decoration: none; font-size: 14px; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(36,89,214,0.25);
   }
   nav.top .nav-cta:hover { color: white; }
 
@@ -106,7 +109,7 @@
     border: 1px solid transparent; font-size: 15px;
   }
   .btn.primary { background: linear-gradient(135deg, var(--accent), var(--purple)); color: white; box-shadow: 0 8px 22px rgba(36,89,214,0.30); }
-  .btn.ghost { background: white; color: var(--ink); border-color: var(--line); }
+  .btn.blue   { background: var(--accent-bg); color: var(--accent); border: 1px solid #c9dcff; }
   .btn.amber  { background: linear-gradient(135deg, var(--orange), var(--orange-2)); color: white; box-shadow: 0 8px 22px rgba(224,122,43,0.30); }
 
   /* STAT BAR */
@@ -238,8 +241,31 @@
     .stats { grid-template-columns: repeat(2, 1fr); }
     .grid-2 { grid-template-columns: 1fr; }
     .grid-3 { grid-template-columns: 1fr; }
-    nav.top a { margin-left: 12px; font-size: 13px; }
     .row { grid-template-columns: 110px 1fr; }
+    nav.top a.nav-link { display: none; }
+  }
+  @media (max-width: 640px) {
+    .wrap { padding: 0 16px; }
+    nav.top .row { height: 56px; }
+    .brand { font-size: 14px; }
+    .brand .subtitle { display: none; }
+    nav.top .nav-cta { padding: 8px 12px; font-size: 13px; }
+    header.hero { padding: 40px 0 32px; }
+    h1 { font-size: 30px; line-height: 1.15; }
+    .lead { font-size: 16px; }
+    section { padding: 48px 0; }
+    .stats { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat { padding: 16px; }
+    .stat .v { font-size: 24px; }
+    .offer { padding: 22px; }
+    .offer h3 { font-size: 20px; }
+    .row { grid-template-columns: 1fr; padding: 10px 12px; gap: 4px; }
+    .row .label { font-size: 10px; }
+    .returnbox .big { font-size: 22px; }
+    .cta-block { padding: 24px 18px; }
+    .cta-block h3 { font-size: 20px; }
+    table.cmp th, table.cmp td { padding: 10px 12px; font-size: 13px; }
+    .btn { font-size: 14px; padding: 11px 14px; }
   }
 </style>
 </head>
@@ -250,13 +276,13 @@
   <div class="wrap row">
     <div class="brand">
       <div class="logo">R</div>
-      <div>Rosamond <span style="color:var(--ink-mute);font-weight:500;">· Investment Offer</span></div>
+      <div>Rosamond <span class="subtitle">· Investment Offer</span></div>
     </div>
-    <div>
-      <a href="#atad">ATAD</a>
-      <a href="#buildco">Private Investor</a>
-      <a href="#compare">Compare</a>
-      <a class="nav-cta" href="https://rosamond2006.vercel.app/lp.html" target="_blank" rel="noopener">Full Cash Flow Model →</a>
+    <div class="nav-links">
+      <a class="nav-link" href="#atad">ATAD</a>
+      <a class="nav-link" href="#buildco">Private Investor</a>
+      <a class="nav-link" href="#compare">Compare</a>
+      <a class="nav-cta" href="https://rosamond2006.vercel.app/lp.html" target="_blank" rel="noopener">Cash Flow Model →</a>
     </div>
   </div>
 </nav>
@@ -269,7 +295,7 @@
     <p class="lead">A targeted invitation for <strong>ATAD</strong> — the steel-and-materials manufacturer expanding into the US market — and one <strong>private investor</strong> backing the Build-Co assembly plant that will deliver the project and seed a pipeline of future developments.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://rosamond2006.vercel.app/lp.html" target="_blank" rel="noopener">View Full LP Cash Flow Model →</a>
-      <a class="btn ghost" href="#atad">ATAD Offer</a>
+      <a class="btn blue" href="#atad">ATAD Offer</a>
       <a class="btn amber" href="#buildco">Private Investor Offer</a>
     </div>
 
